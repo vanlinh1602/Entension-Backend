@@ -6,6 +6,7 @@ import io
 import easyocr
 from PIL import Image
 from lib.text import findBubbleText
+from gingerit.gingerit import GingerIt
 
 def handleUploadImage(data):
     base64Data = data['image']
@@ -17,6 +18,11 @@ def handleUploadImage(data):
     results = reader.readtext(img)
     groupText = findBubbleText(results)
 
+    parser = GingerIt()    
+    for key, group in groupText.items():
+        resultCorr = parser.parse(group['text'])
+        print(resultCorr["result"])
+      
     img = IMG.drawBubble(img, groupText)
     
     retval, buffer = cv2.imencode('.jpg', img)
