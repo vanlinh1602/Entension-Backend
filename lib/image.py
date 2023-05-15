@@ -1,32 +1,25 @@
-import keras_ocr
 import cv2
-import math
 import numpy as np
-import io
-from PIL import Image
+from lib.utils import *
 
-def midpoint(x1, y1, x2, y2):
-    x_mid = int((x1 + x2)/2)
-    y_mid = int((y1 + y2)/2)
-    return (x_mid, y_mid)
+def drawBubble(img: np.ndarray[any], groupText: dict):
+    for key, text in groupText.items():
+        locate = text['locate']
+        [x1, y1], [x2, y2], [x3, y3], [x4, y4] = locate
+        contour = np.array([[[x1, y1]], [[x2, y2]], [[x3, y3]], [[x4, y4]]], dtype=np.int32)
+        cv2.drawContours(img, [contour], -1, (0, 0, 255), thickness=3)
+    return img
 
-def inpaint_text(img_base64):
-    pipeline = keras_ocr.pipeline.Pipeline()
-    img = np.array(Image.open(io.BytesIO(img_base64)))
-
-    # generate (word, box) tuples 
-    prediction_groups = pipeline.recognize([img])
+def inpaint_text(img: np.ndarray[any], groupText: dict):
     mask = np.zeros(img.shape[:2], dtype="uint8")
-    for box in prediction_groups[0]:
-        x0, y0 = box[1][0]
-        x1, y1 = box[1][1] 
-        x2, y2 = box[1][2]
-        x3, y3 = box[1][3] 
+    for key, group in groupText.items():
+        locate = group['locate']
+        topLeft, topRight, bottomRight, bottomLeft = locate
+
+        x_mid0, y_mid0 = midPoint(topLeft, topRight)
+        x_mid1, y_mi1 = midPoint(bottomLeft, bottomRight)
         
-        x_mid0, y_mid0 = midpoint(x1, y1, x2, y2)
-        x_mid1, y_mi1 = midpoint(x0, y0, x3, y3)
-        
-        thickness = int(math.sqrt( (x2 - x1)**2 + (y2 - y1)**2 ))
+        thickness = int(calculateDistance(topLeft, topRight)/2)
         
         cv2.line(mask, (x_mid0, y_mid0), (x_mid1, y_mi1), 255,    
         thickness)
