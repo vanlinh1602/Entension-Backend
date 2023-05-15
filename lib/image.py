@@ -7,7 +7,7 @@ def drawBubble(img: np.ndarray[any], groupText: dict):
         locate = text['locate']
         [x1, y1], [x2, y2], [x3, y3], [x4, y4] = locate
         contour = np.array([[[x1, y1]], [[x2, y2]], [[x3, y3]], [[x4, y4]]], dtype=np.int32)
-        cv2.drawContours(img, [contour], -1, (0, 0, 255), thickness=3)
+        cv2.drawContours(img, [contour], -1, (0, 0, 255), thickness=1)
     return img
 
 def inpaint_text(img: np.ndarray[any], groupText: dict):
