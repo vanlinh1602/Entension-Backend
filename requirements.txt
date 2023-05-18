@@ -3,3 +3,4 @@ Flask==2.2.3
 keras-ocr==0.8.9
 tensorflow==2.12.0
 easyocr==1.6.2
+flask_cors

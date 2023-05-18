@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, request
 from lib.image import *
 from routers.modules import *
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/get-image', methods=['POST'])
 def image():
