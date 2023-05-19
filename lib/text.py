@@ -1,4 +1,5 @@
 from lib.utils import *
+import numpy as np
 
 def centerTextLocate(locate):
     topLeft, topRight, bottomRight, bottomLeft = locate
@@ -45,10 +46,10 @@ def getNewBubbleLocate(oldLocate, locate):
     return [newTopLeft, newTopRight, newBottomRight, newBottomLeft]
 
 def findBubbleText (data: list | list[dict[str, any]] | list[str] | list[list]):
-    groupText = {}
+    groupText: dict[str, any] = {}
     for textData in data:
-        locate = textData[0]
-        text = textData[1]
+        locate = np.array(textData[0]).tolist()
+        text = str(textData[1])
         if (len(groupText) > 0):
             flag = False
             for key, groupValue in dict(groupText).items():
