@@ -20,4 +20,4 @@ def handleDetectBubble(data):
     img = IMG.drawBubble(img, groupText)
     retval, buffer = cv2.imencode('.jpg', img)
     encoded_image = base64.b64encode(buffer).decode('utf-8')
-    return {'image': encoded_image, 'groupTexts': groupText}
+    return {'image': encoded_image, 'groupText': groupText}
