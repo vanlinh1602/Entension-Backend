@@ -49,7 +49,7 @@ def findBubbleText (data: list | list[dict[str, any]] | list[str] | list[list]):
     groupText: dict[str, any] = {}
     for textData in data:
         locate = np.array(textData[0]).tolist()
-        text = str(textData[1])
+        text = str(textData[1]).lower()
         if (len(groupText) > 0):
             flag = False
             for key, groupValue in dict(groupText).items():
