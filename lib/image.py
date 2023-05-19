@@ -12,18 +12,12 @@ def drawBubble(img: np.ndarray[any], groupText: dict):
 
 def inpaint_text(img: np.ndarray[any], groupText: dict):
     mask = np.zeros(img.shape[:2], dtype="uint8")
-    for key, group in groupText.items():
-        locate = group['locate']
-        topLeft, topRight, bottomRight, bottomLeft = locate
-
-        x_mid0, y_mid0 = midPoint(topLeft, topRight)
-        x_mid1, y_mi1 = midPoint(bottomLeft, bottomRight)
-        
-        thickness = int(calculateDistance(topLeft, topRight)/2)
-        
-        cv2.line(mask, (x_mid0, y_mid0), (x_mid1, y_mi1), 255,    
-        thickness)
-        img = cv2.inpaint(img, mask, 7, cv2.INPAINT_NS)
+    for locate in groupText.values():
+        points = np.array([locate], np.int32)
+        points = points.reshape((-1, 1, 2))
+        cv2.polylines(mask, [points], True, (255, 255, 255), thickness=2)
+        cv2.fillPoly(mask, [points], (255, 255, 255))
+    img = cv2.inpaint(img, mask, 7, cv2.INPAINT_NS)
     return(img)
 
 def exportImage(img, name: str):

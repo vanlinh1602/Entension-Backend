@@ -6,7 +6,6 @@ import io
 import easyocr
 from PIL import Image
 from lib.text import findBubbleText
-import json
 
 def handleDetectBubble(data):
     base64Data = data['image']
@@ -20,4 +19,9 @@ def handleDetectBubble(data):
     img = IMG.drawBubble(img, groupText)
     retval, buffer = cv2.imencode('.jpg', img)
     encoded_image = base64.b64encode(buffer).decode('utf-8')
-    return {'image': encoded_image, 'groupText': groupText}
+    response = {
+        'originImage': base64Data,
+        'imageDetected': encoded_image, 
+        'groupText': groupText
+    }
+    return response
