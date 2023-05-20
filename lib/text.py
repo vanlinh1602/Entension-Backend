@@ -3,6 +3,8 @@ import textwrap
 import cv2
 from lib.utils import *
 from PIL import Image, ImageDraw, ImageFont
+from translate import Translator
+
 
 def centerTextLocate(locate):
     topLeft, topRight, bottomRight, bottomLeft = locate
@@ -111,3 +113,8 @@ def insertText (img, text, position, max_width):
         draw.text((x, y), line, font=font, fill="black")
         y += line_height
     return np.array(img)
+
+def translate_text(text, target_language='vi'):
+    translator = Translator(to_lang=target_language)
+    translation = translator.translate(text)
+    return translation
