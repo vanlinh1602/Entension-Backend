@@ -50,7 +50,7 @@ def getNewBubbleLocate(oldLocate, locate):
 
     return [newTopLeft, newTopRight, newBottomRight, newBottomLeft]
 
-def findBubbleText (data: list | list[dict[str, any]] | list[str] | list[list]):
+def findBubbleText (data):
     groupText: dict[str, any] = {}
     for textData in data:
         locate = np.array(textData[0]).tolist()
