@@ -24,5 +24,11 @@ def removeText():
     res = handleRemoveText(req)
     return jsonify(res)
 
+@app.route('/translateText', methods=['POST'])
+def translateText():
+    req = request.get_json()
+    res = handleTranslateText(req)
+    return jsonify(res)
+
 if __name__ == '__main__':
     app.run(port=8000)

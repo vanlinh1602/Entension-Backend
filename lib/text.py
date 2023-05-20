@@ -1,5 +1,8 @@
-from lib.utils import *
 import numpy as np
+import textwrap
+import cv2
+from lib.utils import *
+from PIL import Image, ImageDraw, ImageFont
 
 def centerTextLocate(locate):
     topLeft, topRight, bottomRight, bottomLeft = locate
@@ -78,3 +81,33 @@ def findBubbleText (data: list | list[dict[str, any]] | list[str] | list[list]):
                 'lastText': locate
             }
     return groupText
+
+font_path = "./fonts/Roboto-Regular.ttf"
+font_size = 18
+
+def insertText (img, text, position, max_width):
+    img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    draw = ImageDraw.Draw(img)
+    
+    font = ImageFont.truetype(font_path, font_size)
+
+    x, y = position[0]
+    x_bubble_locate = position[0][0]
+    bubble_width = position[1][0] - position[0][0]
+
+    # bubble_hight = position[1][1] - position[2][1]
+    # max_height = bubble_hight - 10  
+
+    wrapped_text = textwrap.wrap(text, width=max_width)
+
+    for line in wrapped_text:
+        line_width, line_height = font.getsize(line)
+        x = x_bubble_locate + (bubble_width - line_width) // 2
+
+        # Check if the line exceeds the maximum height
+        # if y + line_height > max_height:
+        #     break
+        
+        draw.text((x, y), line, font=font, fill="black")
+        y += line_height
+    return np.array(img)

@@ -10,13 +10,12 @@ def drawBubble(img: np.ndarray[any], groupText: dict):
         cv2.drawContours(img, [contour], -1, (0, 0, 255), thickness=1)
     return img
 
-def inpaint_text(img: np.ndarray[any], groupText: dict):
+def inpaint_text(img: np.ndarray[any], locate):
     mask = np.zeros(img.shape[:2], dtype="uint8")
-    for locate in groupText.values():
-        points = np.array([locate], np.int32)
-        points = points.reshape((-1, 1, 2))
-        cv2.polylines(mask, [points], True, (255, 255, 255), thickness=2)
-        cv2.fillPoly(mask, [points], (255, 255, 255))
+    points = np.array([locate], np.int32)
+    points = points.reshape((-1, 1, 2))
+    cv2.polylines(mask, [points], True, (255, 255, 255), thickness=2)
+    cv2.fillPoly(mask, [points], (255, 255, 255))
     img = cv2.inpaint(img, mask, 7, cv2.INPAINT_NS)
     return(img)
 
