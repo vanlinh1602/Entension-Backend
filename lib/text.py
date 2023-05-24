@@ -84,10 +84,9 @@ def findBubbleText (data: list | list[dict[str, any]] | list[str] | list[list]):
             }
     return groupText
 
-font_path = "./fonts/Roboto-Regular.ttf"
-font_size = 18
-
 def insertText (img, text, position, max_width):
+    font_path = "./fonts/Roboto-Regular.ttf"
+    font_size = 14
     img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(img)
     
