@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from lib.image import *
 from routers.index import *
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -31,4 +32,5 @@ def translateText():
     return jsonify(res)
 
 if __name__ == '__main__':
-    app.run(port=8000)
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0',port=8000)
