@@ -9,14 +9,16 @@ from lib.text import insertText
 def handleTranslateText (data):
     base64Data = data['image']
     dataTrans = data['dataTrans']
+    fontSize = data['fontSize']
+    maxWidth = data['maxWidth']
     imgBase64 = base64.b64decode(base64Data)
     img = np.array(Image.open(io.BytesIO(imgBase64)))
 
     for group in dataTrans:
         location = group['location']
-        text = group['textTrans']
+        text = group['text']
         img = IMG.inpaint_text(img, location)
-        img = insertText(img, text, location, 15)
+        img = insertText(img, text, location, fontSize, maxWidth)
 
     retval, buffer = cv2.imencode('.jpg', img)
     encoded_image = base64.b64encode(buffer).decode('utf-8')
