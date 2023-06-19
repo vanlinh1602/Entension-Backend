@@ -1,4 +1,10 @@
+import numpy as np
+import textwrap
+import cv2
 from lib.utils import *
+from PIL import Image, ImageDraw, ImageFont
+from translate import Translator
+
 
 def centerTextLocate(locate):
     topLeft, topRight, bottomRight, bottomLeft = locate
@@ -44,11 +50,11 @@ def getNewBubbleLocate(oldLocate, locate):
 
     return [newTopLeft, newTopRight, newBottomRight, newBottomLeft]
 
-def findBubbleText (data: list | list[dict[str, any]] | list[str] | list[list]):
-    groupText = {}
+def findBubbleText (data):
+    groupText: dict[str, any] = {}
     for textData in data:
-        locate = textData[0]
-        text = textData[1]
+        locate = np.array(textData[0]).tolist()
+        text = str(textData[1]).lower()
         if (len(groupText) > 0):
             flag = False
             for key, groupValue in dict(groupText).items():
@@ -77,3 +83,36 @@ def findBubbleText (data: list | list[dict[str, any]] | list[str] | list[list]):
                 'lastText': locate
             }
     return groupText
+
+def insertText (img, text, position, font_size, max_width):
+    font_path = "./fonts/Roboto-Regular.ttf"
+    img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    draw = ImageDraw.Draw(img)
+    
+    font = ImageFont.truetype(font_path, font_size)
+
+    x, y = position[0]
+    x_bubble_locate = position[0][0]
+    bubble_width = position[1][0] - position[0][0]
+
+    # bubble_hight = position[1][1] - position[2][1]
+    # max_height = bubble_hight - 10  
+
+    wrapped_text = textwrap.wrap(text, width=max_width)
+
+    for line in wrapped_text:
+        line_width, line_height = font.getsize(line)
+        x = x_bubble_locate + (bubble_width - line_width) // 2
+
+        # Check if the line exceeds the maximum height
+        # if y + line_height > max_height:
+        #     break
+        
+        draw.text((x, y), line, font=font, fill="black")
+        y += line_height
+    return np.array(img)
+
+def translate_text(text, target_language='vi'):
+    translator = Translator(to_lang=target_language)
+    translation = translator.translate(text)
+    return translation
