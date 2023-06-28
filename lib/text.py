@@ -84,8 +84,8 @@ def findBubbleText (data):
             }
     return groupText
 
-def insertText (img, text, position, font_size, max_width):
-    font_path = "./fonts/Roboto-Regular.ttf"
+def insertText (img, text, position, font_size, max_width, font):
+    font_path = "./fonts/{}-Regular.ttf".format(font)
     img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     draw = ImageDraw.Draw(img)
     

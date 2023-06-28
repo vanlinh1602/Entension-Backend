@@ -11,6 +11,7 @@ def handleTranslateText (data):
     dataTrans = data['dataTrans']
     fontSize = data['fontSize']
     maxWidth = data['maxWidth']
+    font = data['font']
     imgBase64 = base64.b64decode(base64Data)
     img = np.array(Image.open(io.BytesIO(imgBase64)))
 
@@ -18,7 +19,7 @@ def handleTranslateText (data):
         location = group['location']
         text = group['text']
         img = IMG.inpaint_text(img, location)
-        img = insertText(img, text, location, fontSize, maxWidth)
+        img = insertText(img, text, location, fontSize, maxWidth, font)
 
     retval, buffer = cv2.imencode('.jpg', img)
     encoded_image = base64.b64encode(buffer).decode('utf-8')

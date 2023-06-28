@@ -6,10 +6,11 @@ def drawBubble(img, groupText):
     for key, text in groupText.items():
         locate = text['locate']
         [x1, y1], [x2, y2], [x3, y3], [x4, y4] = locate
+        mid = midPoint([x1,y1], [x3, y3])
         contour = np.array([[[x1, y1]], [[x2, y2]], [[x3, y3]], [[x4, y4]]], dtype=np.int32)
         cv2.drawContours(img, [contour], -1, (0, 0, 255), thickness=1)
         try:
-            cv2.putText(img, key, (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (88, 52, 235), 3)
+            cv2.putText(img, key[5:], mid, cv2.FONT_HERSHEY_SIMPLEX, 1.0, (88, 52, 235), 2)
         except: {}
 
     return img
