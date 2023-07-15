@@ -21,7 +21,11 @@ def inpaint_text(img, locate):
     points = points.reshape((-1, 1, 2))
     cv2.polylines(mask, [points], True, (255, 255, 255), thickness=2)
     cv2.fillPoly(mask, [points], (255, 255, 255))
-    img = cv2.inpaint(img, mask, 7, cv2.INPAINT_NS)
+    cv2.fillPoly(img, [points], (255, 255, 255))
+    try:
+        img = cv2.inpaint(img, mask, 7, cv2.INPAINT_NS)
+    except: {}
+
     return(img)
 
 def exportImage(img, name):

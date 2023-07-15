@@ -18,7 +18,7 @@ def handleTranslateText (data):
     for group in dataTrans:
         location = group['location']
         text = group['text']
-        img = IMG.inpaint_text(img, location)
+        # img = IMG.inpaint_text(img, location)
         img = insertText(img, text, location, fontSize, maxWidth, font)
 
     retval, buffer = cv2.imencode('.jpg', img)
