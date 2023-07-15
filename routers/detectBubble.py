@@ -26,7 +26,7 @@ def handleDetectBubble(data):
             'textTrans': translate_text(text),
             'locate': locate
         }
-        
+
     img = IMG.drawBubble(img, groupText)
     retval, buffer = cv2.imencode('.jpg', img)
     encoded_image = base64.b64encode(buffer).decode('utf-8')

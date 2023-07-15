@@ -16,17 +16,35 @@ def centerTextLocate(locate):
 def getTextHeight(locate):
     pos1 = locate[0][1]
     pos2 = locate[2][1]
-    return pos2 - pos1 
+    return pos2 - pos1
 
-def isNearBubble (lastBubbleLocate, textLocate):
-    lastTextBubbleMid = centerTextLocate(lastBubbleLocate)
-    textMid = centerTextLocate(textLocate)
-    textHeight = getTextHeight(textLocate) * 1.2
-    distance = calculateDistance(lastTextBubbleMid, textMid)
-    if (distance <= textHeight):
+def checkNear(pos1, pos2, maxLenght):
+    distance = calculateDistance(pos1, pos2)
+    if (distance <= maxLenght):
         return True
     else:
         return False
+
+def isNearBubble (location1, location2):
+    topLeft1, topRight1, bottomRight1, bottomLeft1 = location1
+    topLeft2, topRight2, bottomRight2, bottomLeft2 = location2
+
+    textHeight1 = getTextHeight(location1)
+    textHeight2 = getTextHeight(location2)
+
+    maxLenght = 2
+    if (textHeight1 > textHeight2):
+        maxLenght = maxLenght * textHeight2
+    else:
+        maxLenght = maxLenght * textHeight1
+
+    nearLeft = checkNear(midPoint(topLeft1, bottomLeft1), midPoint(topRight2, bottomRight2), maxLenght)
+    nearRight = checkNear(midPoint(topRight1, bottomRight1), midPoint(topLeft2, bottomLeft2), maxLenght)
+    nearTop = checkNear(midPoint(topLeft1, topRight1), midPoint(bottomLeft2, bottomRight2), maxLenght)
+    nearBottom = checkNear(midPoint(bottomRight1, bottomLeft1), midPoint(bottomRight2, bottomLeft2), maxLenght)
+
+    return nearLeft or nearRight or nearTop or nearBottom
+
     
 def getNewBubbleLocate(oldLocate, locate):
     oldTopLeft, oldTopRight, oldBottomRight, oldBottomLeft = oldLocate
